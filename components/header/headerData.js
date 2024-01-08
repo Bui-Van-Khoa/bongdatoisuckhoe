@@ -9,7 +9,7 @@ export const navMenu = [
 	},
 	{
 		title: "Quỹ đội bóng",
-		link: "/"
+		link: "/team-fun"
 	},
 	{
 		title: "Danh sách phạt",
@@ -17,7 +17,7 @@ export const navMenu = [
 	},
 	{
 		title: "Đăng ký thi đấu",
-		link: "/register"
+		link: "/register-compete"
 	},
 ]
 	// dashboard: "Trang chủ",

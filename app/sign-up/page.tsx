@@ -2,8 +2,8 @@
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import {  useState } from "react";
-import { Button, Form, Input } from 'antd';
+import { useEffect, useState } from "react";
+import { Button, Checkbox, Form, Input } from 'antd';
 import Image from 'next/legacy/image'
 import logo from '@/assets/channels4_profile.jpg'
 
@@ -11,41 +11,28 @@ export default function LoginPage() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const router = useRouter()
-	const [loading, setLoading] = useState(false);
 
 	const supabase = createClientComponentClient();
 
-	// useEffect(() => {
-	// 	async function getUser() {
-	// 		const { data: { user } } = await supabase.auth.getUser()
-	// 		setLoading(false)
-	// 	}
 
-	// 	getUser();
-	// }, [])
-
-
-	const handleSignIn = async () => {
-		setLoading(true)
-		const res = await supabase.auth.signInWithPassword({
+	const handleSignUp = async () => {
+		const { data, error } = await supabase.auth.signUp({
 			email,
-			password
+			password,
+			options: {
+				emailRedirectTo: `${location.origin}/auth/callback`
+			}
 		})
-		if (res.data.session?.access_token) {
-			document.cookie = "name=John Doe";
-			router.push("/");
-			setEmail('')
-			setPassword('')
+		if (data.user) {
+			if (window.confirm('Bạn đã đăng ký thành công. Xin mời kiểm tra email để xác thực tài khoản trước khi đăng nhập!')) {
+				setEmail('')
+				setPassword('')
+			}
 		} else {
-			window.alert("Email hoặc password không đúng. Xin mời thử lại!")
+			window.alert(error?.message)
 		}
-		setLoading(false)
+		router.refresh();
 	}
-
-	// if (loading) {
-	// 	return <h1>loading..</h1>
-	// }
-
 
 	return (
 		<main className="h-screen flex flex-col justify-center items-center ">
@@ -57,7 +44,7 @@ export default function LoginPage() {
 					</div>
 				</div>
 				<div className="px-10">
-					<h2 className="text-lg font-bold leading-tight tracking-tight text-gray-900 md:text-2xl mt-4">Login form</h2>
+					<h2 className="text-lg font-bold leading-tight tracking-tight text-gray-900 md:text-2xl mt-4">Register form</h2>
 					<Form
 						name="basic"
 						initialValues={{ remember: true }}
@@ -72,7 +59,6 @@ export default function LoginPage() {
 						>
 							<Input onChange={(e) => setEmail(e.target.value)} />
 						</Form.Item>
-
 						<Form.Item
 							label="Password"
 							name="password"
@@ -80,20 +66,18 @@ export default function LoginPage() {
 						>
 							<Input.Password onChange={(e) => setPassword(e.target.value)} />
 						</Form.Item>
-
 						<div className="flex justify-between">
-							<Form.Item >
-								<Button type="primary" htmlType="submit" className="bg-red-500" onClick={handleSignIn} loading={loading}>
-									Sign In
-								</Button>
-							</Form.Item>
-							<Button type="primary" className="bg-red-500" onClick={() => router.push("/sign-up")}>
-								Sign Up
+						<Form.Item >
+							<Button type="primary" className="bg-red-500" onClick={handleSignUp}>
+								Register
+							</Button>
+						</Form.Item>
+						<Button type="primary" className="bg-red-500" onClick={() => router.push("/login")}>
+								Back to Login
 							</Button>
 						</div>
 					</Form>
 				</div>
-
 			</section>
 		</main>
 	)
