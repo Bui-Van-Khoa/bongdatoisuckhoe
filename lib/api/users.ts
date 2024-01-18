@@ -31,8 +31,4 @@ export async function getAllUser() {
 	return data;
 }
 
-export async function getCookies() {
-	const { data, error } = await supabase.auth.getSession()
-	console.log("session", data, error)
-	return data;
-}
+

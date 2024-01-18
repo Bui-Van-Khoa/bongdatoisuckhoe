@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/store.js", "components/Header/Header.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/store.js", "components/Header/Header.tsx", "app/template-email/emailTemplate.js"],
   "exclude": ["node_modules"]
 }

@@ -44,8 +44,8 @@ const page: React.FC = () => {
 			try {
 				setIsLoading(true)
 				const data: any = await getAllUser()
-				const temptableData : any = []
-				data.map((item :any) => {
+				const temptableData: any = []
+				data.map((item: any) => {
 					temptableData.push({
 						key: item.id,
 						name: item.user_name,
@@ -66,11 +66,10 @@ const page: React.FC = () => {
 	return (
 		<div className='px-3 sm:px-10 bg-slate-200 h-screen'>
 			<div className='flex flex-col gap-4 pb-8' >
-				<div className='bg-white shadow-md mt-2 rounded-lg p-4 '>
-					<h1 className='text-xl font-medium'>Thành viên đội bóng</h1>
-					<Table columns={columns} dataSource={dataTable} loading={isLoading} className='mt-4' />
-				</div>
-
+					<div className='bg-white shadow-md mt-2 rounded-lg p-4 '>
+						<h1 className='text-xl font-medium'>Thành viên đội bóng</h1>
+						<Table columns={columns} dataSource={dataTable} loading={isLoading} className='mt-4' />
+					</div>
 			</div>
 		</div>
 

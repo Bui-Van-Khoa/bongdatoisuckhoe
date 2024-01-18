@@ -12,7 +12,7 @@ import { HeaderStyled } from './StyledHeader'
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation'
 import LoadingComponent from '../LoadingComponent';
-import {signOut} from '@/lib/api/authentication'
+import { signOut } from '@/lib/api/authentication'
 
 
 const Header: React.FC = () => {
@@ -28,7 +28,7 @@ const Header: React.FC = () => {
 	const router = useRouter();
 
 	useEffect(() => {
-		
+
 		async function getUserInformation() {
 			const user: any = await getUser();
 			setUserName(user?.email.match(/^([^@]*)@/)[1]);
@@ -52,7 +52,7 @@ const Header: React.FC = () => {
 
 	const handleSignOut = async () => {
 		const isSignOut = await signOut()
-		if(isSignOut) {
+		if (isSignOut) {
 			router.push("/login")
 			return
 		}
@@ -90,14 +90,14 @@ const Header: React.FC = () => {
 							></Button>
 						</div>
 					</div>
-					<div className='bg-amber-300  px-3 sm:px-10 hidden sm:block py-3'>
+					<div className='bg-amber-300 sm:px-10 hidden sm:block '>
 						<ul className='flex md:gap-8 gap-4'>
 							{Object.values(navMenu).map((item, index) => (
-								<li key={index} className='text-lg font-medium hover:text-blue-800'>
-									<Link href={item.link}>
+								<Link href={item.link} key={index}>
+									<li  className={`text-lg font-medium hover:text-blue-800 p-3 ${pathName === item.link ? 'text-blue-800' : 'text-black'}`}>
 										{item.title}
-									</Link>
-								</li>
+									</li>
+								</Link>
 							))}
 						</ul>
 					</div>

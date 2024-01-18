@@ -1,59 +1,66 @@
 "use client"
-import Link from "next/link"
+import { Button, Form } from "antd";
+import { useEffect } from "react";
 
 const page = () => {
+	const formData = new FormData()
 
-	async function handleSubmit(event) {
+	async function handleSubmit(event: any) {
 
 		event.preventDefault();
-		const formData = new FormData(event.target)
+
 		try {
+			const response = await fetch('/api/contact', {
+				method: 'post',
+				body: formData,
+			});
 
-				const response = await fetch('/api/contact', {
-						method: 'post',
-						body: formData,
-				});
+			if (!response.ok) {
+				throw new Error(`response status: ${response.status}`);
+			}
+			const responseData = await response.json();
 
-				console.log("response", response)
-
-				if (!response.ok) {
-						console.log("falling over")
-						throw new Error(`response status: ${response.status}`);
-				}
-				const responseData = await response.json();
-				console.log(responseData['message'])
-
-				alert('Message successfully sent');
+			alert('Message successfully sent');
 		} catch (err) {
-				console.error(err);
-				alert("Error, please try resubmitting the form");
+			alert("Error, please try resubmitting the form");
 		}
-};
+	};
+
+	useEffect(() => {
+		let flat = 0;
+		const localStorageData: any = localStorage.getItem("matchInformation");
+		const matchInformation = JSON.parse(localStorageData);
+		if (flat === 0) {
+			formData.append("email", matchInformation.email);
+			formData.append("name", matchInformation.userName);
+			formData.append("time", matchInformation.time);
+			formData.append("location", matchInformation.location);
+			formData.append("filedNumber", matchInformation.filedNumber);
+		}
+		flat = +1;
+	}, [])
 
 	return (
-		<>
-		 <main className="flex min-h-screen flex-col items-center" >
-            <div className="relative flex place-items-center p-5 bg-white text-black">
-                <Link href="/">Home</Link>
-            </div>
-
-            <form onSubmit={handleSubmit} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-                <div className="mb-4 flex flex-col w-500">
-
-                    <label htmlFor="form-name">Name </label>
-                    <input id="form-name" autoComplete="name" maxLength={50} size="lg" name="name" className="text-black"/>
-
-                    <label htmlFor="form-email"> Email:</label>
-                    <input id="form-email" required autoComplete="email" maxLength={80} name="email" type="email" className="text-black"/>
-
-                    <label htmlFor="form-message"> Message: </label>
-                    <textarea id="form-message" required name="message" rows={5} className="text-black"/>
-
-                </div>
-                <button className=" rounded bg-sky-400" type="submit">Send</button>
-            </form>
-        </main>
-			</>
+		<div className='px-3 sm:px-10 bg-slate-200 h-full'>
+			<div className='flex flex-col gap-4 pb-8' >
+				<div className='bg-white shadow-md mt-2 rounded-lg p-4 '>
+					<Form
+						name="Đăng ký thi đấu"
+						style={{ maxWidth: 600 }}
+						initialValues={{ remember: true }}
+						onFinish={handleSubmit}
+						autoComplete="off"
+					>
+					<h1 className='text-xl font-medium'>Đăng ký thi đấu</h1>
+						<Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+							<Button type="primary" htmlType="submit">
+								Submit
+							</Button>
+						</Form.Item>
+					</Form>
+				</div>
+			</div>
+		</div>
 	);
 };
 
