@@ -42,7 +42,7 @@ const columns: ColumnsType<DataType> = [
 						render: (text) => {
 							return (
 								<div>
-									<Checkbox >Checkbox</Checkbox>
+									<Checkbox >Nộp</Checkbox>
 								</div>
 							)
 						},
