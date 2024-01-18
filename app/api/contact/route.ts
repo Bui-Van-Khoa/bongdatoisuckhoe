@@ -28,12 +28,15 @@ export async function POST(request: any) {
         name: userName,
         time: time,
         location: location,
-        filedNumber:filedNumber,
+        filedNumber: filedNumber,
       }),
     });
     transporter.close();
-    return NextResponse.json({ message: 'Success: email was sent', status:true});
+    return NextResponse.json({
+      message: 'Success: email was sent',
+      status: true,
+    });
   } catch (error) {
-    NextResponse.json({ message: "COULD NOT SEND MESSAGE", status:false })
+    NextResponse.json({ message: 'COULD NOT SEND MESSAGE', status: false });
   }
 }
