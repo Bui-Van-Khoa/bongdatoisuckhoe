@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import Image from 'next/legacy/image';
 import logo from '@/assets/channels4_profile.jpg';
-import { LoginStyled } from './LoginStyled';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -34,7 +33,7 @@ export default function LoginPage() {
   };
 
   return (
-    <LoginStyled>
+    <main className="h-screen flex flex-col justify-center items-center " >
       <section className="border border-slate-300 shadow-md rounded-lg">
         <div className="bg-yellow-300">
           <div className="flex gap-4 items-center w-full">
@@ -62,7 +61,6 @@ export default function LoginPage() {
             >
               <Input
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-white"
               />
             </Form.Item>
 
@@ -74,9 +72,7 @@ export default function LoginPage() {
               ]}
             >
               <Input.Password
-                id="input-password"
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-white"
               />
             </Form.Item>
 
@@ -103,6 +99,6 @@ export default function LoginPage() {
           </Form>
         </div>
       </section>
-    </LoginStyled>
+    </main>
   );
 }
