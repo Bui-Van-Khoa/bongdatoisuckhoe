@@ -59,7 +59,10 @@ export default function LoginPage() {
               name="email"
               rules={[{ required: true, message: 'Please input your Email!' }]}
             >
-              <Input onChange={(e) => setEmail(e.target.value)} />
+              <Input
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-white"
+              />
             </Form.Item>
 
             <Form.Item
