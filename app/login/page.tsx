@@ -47,6 +47,13 @@ export default function LoginPage() {
           <h2 className="text-lg font-bold leading-tight tracking-tight text-gray-900 md:text-2xl mt-4">
             Login form
           </h2>
+
+					<div className="mb-6">
+  <label for="success" class="block mb-2 text-sm font-medium text-green-700 dark:text-green-500">Your name</label>
+  <input type="text" id="success" className="bg-green-50 border border-green-500 text-green-900 dark:text-green-400 placeholder-green-700 dark:placeholder-green-500 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-green-500" placeholder="Success input" />
+  <p className="mt-2 text-sm text-green-600 dark:text-green-500"><span className="font-medium">Well done!</span> Some success message.</p>
+</div>
+
           <Form
             name="basic"
             initialValues={{ remember: true }}
@@ -97,6 +104,7 @@ export default function LoginPage() {
               </Button>
             </div>
           </Form>
+					<button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Default</button>
         </div>
       </section>
     </main>
