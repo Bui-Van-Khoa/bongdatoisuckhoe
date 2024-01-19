@@ -52,53 +52,23 @@ export default function LoginPage() {
           <h2 className="text-lg font-bold leading-tight tracking-tight text-gray-900 md:text-2xl mt-4">
             Register form
           </h2>
-          <Form
-            name="basic"
-            initialValues={{ remember: true }}
-            layout="vertical"
-            autoComplete="off"
-            className="mt-2"
-          >
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[{ required: true, message: 'Please input your Email!' }]}
-            >
-              <Input
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                { required: true, message: 'Please input your password!' },
-              ]}
-            >
-              <Input.Password
-                id="input-password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Form.Item>
-            <div className="flex justify-between">
-              <Form.Item>
-                <Button
-                  type="primary"
-                  className="bg-red-500"
-                  onClick={handleSignUp}
-                >
-                  Register
-                </Button>
-              </Form.Item>
-              <Button
-                type="primary"
-                className="bg-red-500"
-                onClick={() => router.push('/login')}
-              >
-                Back to Login
-              </Button>
-            </div>
-          </Form>
+
+					<form className="max-w-sm mx-auto pt-4">
+						<div className="mb-5">
+							<label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+							<input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@gmail.com" required
+								onChange={(e) => setEmail(e.target.value)} />
+						</div>
+						<div className="mb-5">
+							<label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
+							<input type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required  onChange={(e) => setPassword(e.target.value)}
+							 />
+						</div>
+					</form>
+					<div className='flex justify-between pb-4'>
+						<button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => handleSignUp()}>Register</button>
+						<button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => router.push('/login')}> Back to Login</button>
+					</div>
         </div>
       </section>
     </main>
