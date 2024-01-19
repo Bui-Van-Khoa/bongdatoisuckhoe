@@ -15,15 +15,6 @@ export default function LoginPage() {
 
   const supabase = createClientComponentClient();
 
-  // useEffect(() => {
-  // 	async function getUser() {
-  // 		const { data: { user } } = await supabase.auth.getUser()
-  // 		setLoading(false)
-  // 	}
-
-  // 	getUser();
-  // }, [])
-
   const handleSignIn = async () => {
     setLoading(true);
     const res = await supabase.auth.signInWithPassword({
@@ -40,10 +31,6 @@ export default function LoginPage() {
     }
     setLoading(false);
   };
-
-  // if (loading) {
-  // 	return <h1>loading..</h1>
-  // }
 
   return (
     <main className="h-screen flex flex-col justify-center items-center ">
@@ -82,7 +69,10 @@ export default function LoginPage() {
                 { required: true, message: 'Please input your password!' },
               ]}
             >
-              <Input.Password onChange={(e) => setPassword(e.target.value)} />
+              <Input.Password
+                onChange={(e) => setPassword(e.target.value)}
+                className="bg-white"
+              />
             </Form.Item>
 
             <div className="flex justify-between">
