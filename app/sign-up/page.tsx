@@ -2,10 +2,11 @@
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import Image from 'next/legacy/image';
 import logo from '@/assets/channels4_profile.jpg';
+import { SignUpStyled } from './SignUpStyled';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -38,11 +39,11 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="h-screen flex flex-col justify-center items-center ">
+    <SignUpStyled>
       <section className="border border-slate-300 shadow-md rounded-lg">
         <div className="bg-yellow-300">
           <div className="flex gap-4 items-center w-full">
-            <Image src={logo} width={80} height={80} />
+            <Image alt="logo" src={logo} width={80} height={80} />
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl px-4">
               Bóng đá sức khỏe tối
             </h1>
@@ -64,7 +65,10 @@ export default function LoginPage() {
               name="email"
               rules={[{ required: true, message: 'Please input your Email!' }]}
             >
-              <Input onChange={(e) => setEmail(e.target.value)} />
+              <Input
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-white"
+              />
             </Form.Item>
             <Form.Item
               label="Password"
@@ -73,13 +77,17 @@ export default function LoginPage() {
                 { required: true, message: 'Please input your password!' },
               ]}
             >
-              <Input.Password onChange={(e) => setPassword(e.target.value)} />
+              <Input.Password
+                id="input-password"
+                className="bg-white"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Form.Item>
             <div className="flex justify-between">
               <Form.Item>
                 <Button
                   type="primary"
-                  className="bg-red-500"
+                  className="bg-red-500 hover-button"
                   onClick={handleSignUp}
                 >
                   Register
@@ -96,6 +104,6 @@ export default function LoginPage() {
           </Form>
         </div>
       </section>
-    </main>
+    </SignUpStyled>
   );
 }

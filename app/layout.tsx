@@ -2,6 +2,7 @@ import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import { Providers } from '@/lib/providers';
 import dynamic from 'next/dynamic';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 
 const Header = dynamic(() => import('@/components/header/Header'), {
   ssr: false,
@@ -27,7 +28,8 @@ export default function RootLayout({
       <html lang="en" className={GeistSans.className}>
         <body>
           <Header />
-          <main className="-z-10">{children}</main>
+					<AntdRegistry> <main className="-z-10">{children}</main></AntdRegistry>
+         
         </body>
       </html>
     </Providers>
