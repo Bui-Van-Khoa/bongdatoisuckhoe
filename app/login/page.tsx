@@ -3,7 +3,7 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Button, Form, Input } from 'antd';
+import { Button } from 'flowbite-react';
 import Image from 'next/legacy/image';
 import logo from '@/assets/channels4_profile.jpg';
 
@@ -61,8 +61,8 @@ export default function LoginPage() {
 						</div>
 					</form>
 					<div className='flex justify-between pb-4'>
-						<button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => handleSignIn()}> Sign In</button>
-						<button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => router.push('/sign-up')}> Sign Up</button>
+						<Button size="sm" isProcessing={loading} onClick={() => handleSignIn()}>Sign In</Button>
+						<Button size="sm" onClick={() => router.push('/sign-up')}>Sign In</Button>
 					</div>
 				</div>
 			</section>

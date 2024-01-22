@@ -1,7 +1,7 @@
 'use client'
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { insertUserToAccount } from '@/lib/api/users';
-import { Button, Modal } from 'flowbite-react';
+import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
 
 
 interface UserInformationFormProps {
@@ -17,46 +17,111 @@ const UserInformationForm: FC<UserInformationFormProps> = ({
 	userId,
 	closeModalStatus,
 }) => {
-	const [openModal, setOpenModal] = useState(false);
-	const handleSubmitForm = async (values: any) => {
-		const accountForm = {
-			id: userId,
-			user_name: values.user_name,
-			position: values.position,
-			number: values.number,
-			height: values.height,
-			weight: values.weight,
-			email: email,
-		};
-		await insertUserToAccount(accountForm);
+	const [formData, setFormData] = useState({
+		id: userId,
+		user_name: null,
+		position: 'Tiền đạo',
+		number: null,
+		height: null,
+		weight: null,
+		email: email,
+	})
+
+	const changeFormData = (data: any) => {
+		const key = data.type;
+		const val = data.val;
+
+		setFormData({
+			...formData,
+			id:userId,
+			email,
+			[key]: val
+		})
+	}
+	const handleSubmitForm = async (e:any) => {
+		e.preventDefault();
+		await insertUserToAccount(formData);
 		closeModalStatus();
 	};
 
+	useEffect(() => {
+		setFormData({
+			...formData,
+			id:userId,
+			email,
+		})
+	},[email,userId])
+
 	return (
 		<>
-<Button onClick={() => setOpenModal(true)}>Toggle modal</Button>
-      <Modal show={openModal} onClose={() => setOpenModal(false)}>
-        <Modal.Header>Terms of Service</Modal.Header>
-        <Modal.Body>
-          <div className="space-y-6">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              With less than a month to go before the European Union enacts new consumer privacy laws for its citizens,
-              companies around the world are updating their terms of service agreements to comply.
-            </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant
-              to ensure a common set of data rights in the European Union. It requires organizations to notify users as
-              soon as possible of high-risk data breaches that could personally affect them.
-            </p>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => setOpenModal(false)}>I accept</Button>
-          <Button color="gray" onClick={() => setOpenModal(false)}>
-            Decline
-          </Button>
-        </Modal.Footer>
-      </Modal>
+			<Modal show={isModalOpen} >
+				<Modal.Header>Vui lòng cập nhật thông tin của bạn</Modal.Header>
+				<Modal.Body>
+					<form className="flex flex-col gap-4" onSubmit={handleSubmitForm}>
+						<div>
+							<div className="mb-2 block">
+								<Label htmlFor="name" value="Tên ingame" />
+							</div>
+							<TextInput
+								id="name"
+								type="text"
+								placeholder="Vui lòng điền tên ingame của bạn!"
+								required
+								onChange={(e) => changeFormData({ type: 'user_name', val: e.target.value })} />
+						</div>
+						<div>
+							<div className="mb-2 block">
+								<Label htmlFor="position" value="Vị trí" />
+							</div>
+							<Select
+								id="position"
+								required
+								onChange={(e) => changeFormData({ type: 'position', val: e.target.value })} >
+								<option>Tiền đạo</option>
+								<option>Tiền vệ</option>
+								<option>Hậu vệ</option>
+								<option>Thủ môn</option>
+								<option>Dự bị</option>
+								<option>Báo con</option>
+							</Select>
+						</div>
+						<div>
+							<div className="mb-2 block">
+								<Label htmlFor="number" value="Số áo (Vui lòng điền chữ số)" />
+							</div>
+							<TextInput
+								id="number"
+								type="number"
+								placeholder="Vui lòng điền số áo của bạn!"
+								required
+								onChange={(e) => changeFormData({ type: 'number', val: e.target.value })} />
+						</div>
+						<div>
+							<div className="mb-2 block">
+								<Label htmlFor="height" value="Chiều cao (cm)" />
+							</div>
+							<TextInput
+								id="height"
+								type="number"
+								placeholder="Vui lòng điền chiều cao của bạn!"
+								required
+								onChange={(e) => changeFormData({ type: 'height', val: e.target.value })} />
+						</div>
+						<div>
+							<div className="mb-2 block">
+								<Label htmlFor="weight" value="Cân nặng (kg)" />
+							</div>
+							<TextInput
+								id="weight"
+								type="number"
+								placeholder="Vui lòng điền cân nặng của bạn!"
+								required
+								onChange={(e) => changeFormData({ type: 'weight', val: e.target.value })} />
+						</div>
+						<Button type="submit">Submit</Button>
+					</form>
+				</Modal.Body>
+			</Modal>
 
 		</>
 	);

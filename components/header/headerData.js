@@ -7,16 +7,12 @@ export const navMenu = [
     title: 'Thành viên',
     link: '/members',
   },
-  {
-    title: 'Quỹ đội bóng',
-    link: '/team-fun',
-  },
+  // {
+  //   title: 'Quỹ đội bóng',
+  //   link: '/team-fun',
+  // },
   {
     title: 'Danh sách phạt',
     link: '/list-of-penalties',
-  },
-  {
-    title: 'Đăng ký thi đấu',
-    link: '/register-compete',
-  },
+  }
 ];

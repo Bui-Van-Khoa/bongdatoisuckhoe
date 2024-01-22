@@ -67,7 +67,7 @@ const columnsAttendedMember = ['Tên', 'Số áo', 'Vị trí', 'Chiều cao', '
 const index: React.FC = () => {
 	const { v4: uuidv4 } = require('uuid');
 	const [isLoading, setIsLoading] = useState(true);
-	const [isOpenUserForm, setIsOpenForm] = useState(true);
+	const [isOpenUserForm, setIsOpenUserForm] = useState(false);
 	const [email, setEmail] = useState<any>('');
 	const [userId, setUserId] = useState();
 	const [filedNumber, setFiledNumber] = useState<any>();
@@ -132,10 +132,10 @@ const index: React.FC = () => {
 	const checkOpenUserDetailModal = async (data: any) => {
 		const isUserExist = await checkIfUserInAccount(data);
 		if (!isUserExist) {
-			setIsOpenForm(true);
+			setIsOpenUserForm(true);
 		} else {
 			setIsLoading(false);
-			// setIsOpenForm(false);
+			setIsOpenUserForm(false);
 		}
 	};
 
@@ -322,14 +322,17 @@ const index: React.FC = () => {
 							/>
 						</div>
 					</div>
-					<UserInformationForm
-						isModalOpen={isOpenUserForm}
-						email={email}
-						userId={userId}
-						closeModalStatus={() => setIsOpenForm(false)}
-					/>
 				</div>
 			)}
+				<UserInformationForm
+					isModalOpen={isOpenUserForm}
+					email={email}
+					userId={userId}
+					closeModalStatus={() =>{
+						setIsOpenUserForm(false),
+						setIsLoading(false)
+					}}
+				/>
 		</>
 	);
 };
