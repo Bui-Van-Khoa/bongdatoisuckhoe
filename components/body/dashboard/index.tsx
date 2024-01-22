@@ -14,7 +14,6 @@ import {
 	removeAttendedMember,
 	getAttendedMember,
 } from '@/lib/api/match';
-import { Button, Form, Table, Tag } from 'antd';
 import TableComponent from '@/components/TableComponent';
 
 export const data = {
@@ -64,27 +63,11 @@ const data1 = {
 	],
 };
 
-const columnsAttendedMember = [
-	{
-		title: 'Tên',
-		dataIndex: 'name',
-		key: 'name',
-	},
-	{
-		title: 'Số áo',
-		dataIndex: 'number',
-		key: 'number',
-	},
-	{
-		title: 'Vị trí',
-		dataIndex: 'position',
-		key: 'position',
-	},
-];
+const columnsAttendedMember = ['Tên', 'Số áo', 'Vị trí', 'Chiều cao', 'Cân nặng'];
 const index: React.FC = () => {
 	const { v4: uuidv4 } = require('uuid');
 	const [isLoading, setIsLoading] = useState(true);
-	const [isOpenUserForm, setIsOpenForm] = useState(false);
+	const [isOpenUserForm, setIsOpenForm] = useState(true);
 	const [email, setEmail] = useState<any>('');
 	const [userId, setUserId] = useState();
 	const [filedNumber, setFiledNumber] = useState<any>();
@@ -152,7 +135,7 @@ const index: React.FC = () => {
 			setIsOpenForm(true);
 		} else {
 			setIsLoading(false);
-			setIsOpenForm(false);
+			// setIsOpenForm(false);
 		}
 	};
 
@@ -240,6 +223,8 @@ const index: React.FC = () => {
 				name: item?.accounts?.user_name,
 				position: item?.accounts?.position,
 				number: item?.accounts?.number,
+				weight: item?.accounts?.weight,
+				height: item?.accounts?.height,
 			});
 		});
 		setDataRegisterCompeteTable(tempData);
@@ -250,8 +235,7 @@ const index: React.FC = () => {
 			{isLoading ? (
 				<LoadingComponent />
 			) : (
-				<div className="flex flex-col gap-4 pb-8">
-					<button onClick={getAttendedMember}>click</button>
+				<div className="flex flex-col gap-4 pb-8 relative">
 					<div className="bg-white shadow-md mt-2 rounded-lg p-4 flex flex-col gap-4">
 						<h1 className="text-xl font-medium">Trận đấu tiếp theo</h1>
 						<p className="text-lg ">
@@ -286,12 +270,10 @@ const index: React.FC = () => {
 
 						<div className="mt-4">
 							<h1 className="text-xl font-medium">Danh sách thi đấu thi đấu</h1>
-							<TableComponent  />
-							{/* <Table
-								dataSource={dataRegisterCompeteTable}
+							<TableComponent
 								columns={columnsAttendedMember}
-								loading={isRegisterCompeteLoading}
-							/> */}
+								dataSource={dataRegisterCompeteTable}
+								loading={isRegisterCompeteLoading} />
 						</div>
 					</div>
 					<div className="bg-white shadow-md mt-2 rounded-lg p-4">
@@ -340,14 +322,14 @@ const index: React.FC = () => {
 							/>
 						</div>
 					</div>
+					<UserInformationForm
+						isModalOpen={isOpenUserForm}
+						email={email}
+						userId={userId}
+						closeModalStatus={() => setIsOpenForm(false)}
+					/>
 				</div>
 			)}
-			<UserInformationForm
-				isModalOpen={isOpenUserForm}
-				email={email}
-				userId={userId}
-				closeModalStatus={() => setIsOpenForm(false)}
-			/>
 		</>
 	);
 };

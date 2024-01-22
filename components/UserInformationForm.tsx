@@ -1,107 +1,65 @@
-import { FC } from 'react';
-import { Button, Modal, Form, Input, Select, InputNumber } from 'antd';
+'use client'
+import { FC, useState } from 'react';
 import { insertUserToAccount } from '@/lib/api/users';
+import { Button, Modal } from 'flowbite-react';
 
-const { Option } = Select;
 
 interface UserInformationFormProps {
-  isModalOpen: boolean;
-  email: string;
-  userId: any;
-  closeModalStatus: () => void;
+	isModalOpen: boolean;
+	email: string;
+	userId: any;
+	closeModalStatus: () => void;
 }
 
 const UserInformationForm: FC<UserInformationFormProps> = ({
-  isModalOpen,
-  email,
-  userId,
-  closeModalStatus,
+	isModalOpen,
+	email,
+	userId,
+	closeModalStatus,
 }) => {
-  const handleSubmitForm = async (values: any) => {
-    const accountForm = {
-      id: userId,
-      user_name: values.user_name,
-      position: values.position,
-      number: values.number,
-      height: values.height,
-      weight: values.weight,
-      email: email,
-    };
-    await insertUserToAccount(accountForm);
-    closeModalStatus();
-  };
+	const [openModal, setOpenModal] = useState(false);
+	const handleSubmitForm = async (values: any) => {
+		const accountForm = {
+			id: userId,
+			user_name: values.user_name,
+			position: values.position,
+			number: values.number,
+			height: values.height,
+			weight: values.weight,
+			email: email,
+		};
+		await insertUserToAccount(accountForm);
+		closeModalStatus();
+	};
 
-  return (
-    <div>
-      <Modal
-        title={
-          <p className="text-black/[.88] text-xl font-bold">
-            Vui lòng cập nhật thông tin của bạn
-          </p>
-        }
-        open={isModalOpen}
-        closable={false}
-        maskClosable={true}
-        footer={null}
-      >
-        <Form layout="vertical" onFinish={handleSubmitForm}>
-          <Form.Item
-            label="Tên ingame"
-            name="user_name"
-            rules={[{ required: true, message: 'Đây là trường bắt buộc' }]}
-          >
-            <Input placeholder="Vui lòng điền tên ingame của bạn!" />
-          </Form.Item>
-          <Form.Item
-            label="Vị trí"
-            name="position"
-            rules={[{ required: true, message: 'Đây là trường bắt buộc' }]}
-          >
-            <Select placeholder="Vui lòng điền vị trí của bạn!" allowClear>
-              <Option value="Tiền đạo">Tiền đạo</Option>
-              <Option value="Tiền vệ">Tiền vệ</Option>
-              <Option value="Hậu vệ">Hậu vệ</Option>
-              <Option value="Thủ môn">Thủ môn</Option>
-              <Option value="Dự bị">Dự bị</Option>
-              <Option value="Báo con">Báo con</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            label="Số áo"
-            name="number"
-            rules={[{ required: true, message: 'Đây là trường bắt buộc!' }]}
-          >
-            <Input type="number" placeholder="Vui lòng điền số áo của bạn!" />
-          </Form.Item>
-          <Form.Item
-            label="Chiều cao (cm)"
-            name="height"
-            rules={[{ required: true, message: 'Đây là trường bắt buộc' }]}
-          >
-            <Input
-              type="number"
-              placeholder="Vui lòng điền chiều cao của bạn!"
-            />
-          </Form.Item>
-          <Form.Item
-            label="Cân nặng (kg)"
-            name="weight"
-            rules={[{ required: true, message: 'Đây là trường bắt buộc' }]}
-          >
-            <Input
-              type="number"
-              placeholder="Vui lòng điền cân nặng của bạn!"
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" className="bg-blue-600">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
+	return (
+		<>
+<Button onClick={() => setOpenModal(true)}>Toggle modal</Button>
+      <Modal show={openModal} onClose={() => setOpenModal(false)}>
+        <Modal.Header>Terms of Service</Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6">
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              With less than a month to go before the European Union enacts new consumer privacy laws for its citizens,
+              companies around the world are updating their terms of service agreements to comply.
+            </p>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant
+              to ensure a common set of data rights in the European Union. It requires organizations to notify users as
+              soon as possible of high-risk data breaches that could personally affect them.
+            </p>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => setOpenModal(false)}>I accept</Button>
+          <Button color="gray" onClick={() => setOpenModal(false)}>
+            Decline
+          </Button>
+        </Modal.Footer>
       </Modal>
-    </div>
-  );
+
+		</>
+	);
 };
 
 export default UserInformationForm;

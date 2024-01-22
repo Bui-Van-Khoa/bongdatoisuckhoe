@@ -21,7 +21,6 @@ export default function LoginPage() {
 			email,
 			password,
 		});
-		console.log("res", res.data, res.error)
 
 		if (res.data.session?.access_token) {
 			router.push('/');

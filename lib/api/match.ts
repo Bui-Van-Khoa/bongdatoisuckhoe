@@ -41,7 +41,9 @@ export async function getAttendedMember() {
     accounts (
       user_name, 
 			position,
-			number
+			number,
+			height,
+			weight
     )
   `);
   return data;

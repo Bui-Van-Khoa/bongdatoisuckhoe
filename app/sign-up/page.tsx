@@ -3,7 +3,6 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
 import Image from 'next/legacy/image';
 import logo from '@/assets/channels4_profile.jpg';
 
