@@ -1,6 +1,5 @@
 'use client'
 import { FC, useEffect, useState } from 'react';
-import { getListPlace } from '@/lib/api/match';
 import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
 import { listMatchPlace } from './list-match-place';
 import { DatePicker } from 'antd';
