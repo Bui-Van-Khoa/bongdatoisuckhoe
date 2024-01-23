@@ -61,8 +61,8 @@ export default function LoginPage() {
 						</div>
 					</form>
 					<div className='flex justify-between pb-4'>
-						<Button size="sm" isProcessing={loading} onClick={() => handleSignIn()}>Sign In</Button>
-						<Button size="sm" onClick={() => router.push('/sign-up')}>Sign In</Button>
+						<Button size="sm" isProcessing={loading} onClick={() => handleSignIn()}>Sign in</Button>
+						<Button size="sm" onClick={() => router.push('/sign-up')}>Sign up</Button>
 					</div>
 				</div>
 			</section>

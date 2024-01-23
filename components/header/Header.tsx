@@ -13,6 +13,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import LoadingComponent from '../LoadingComponent';
 import { signOut } from '@/lib/api/authentication';
+import { getUserDetail } from '@/common/getUserDetail';
+
 
 const Header: React.FC = () => {
 	const [show, setShow] = useState(false);
@@ -27,8 +29,8 @@ const Header: React.FC = () => {
 
 	useEffect(() => {
 		async function getUserInformation() {
-			const user: any = await getUser();
-			setUserName(user?.email.match(/^([^@]*)@/)[1]);
+			const user: any = getUserDetail();
+			setUserName(user?.user_name);
 		}
 		if (pathName === '/login' || pathName === '/sign-up') {
 			setIsShowHeader(true);

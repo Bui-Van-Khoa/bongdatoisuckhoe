@@ -2,6 +2,7 @@ import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 
 import type { NextRequest } from 'next/server'
+import { getUserDetail } from './lib/api/users'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
@@ -12,8 +13,11 @@ export async function middleware(req: NextRequest) {
   } = await supabase.auth.getUser()
   
   if (!user ) {
-    return NextResponse.redirect(new URL('/login', req.url))
-  }
+		return NextResponse.redirect(new URL('/login', req.url))
+  }else {
+		const data:any = await getUserDetail(user.id)
+		res.cookies.set('user', JSON.stringify(data[0]))
+	}
 
   return res
 }

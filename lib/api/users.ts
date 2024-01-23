@@ -27,3 +27,8 @@ export async function getAllUser() {
   const { data, error } = await supabase.from('accounts').select();
   return data;
 }
+
+export async function getUserDetail(id:any) {
+	const { data } = await supabase.from('accounts').select();
+  return data;
+}

@@ -1,6 +1,5 @@
 'use client'
 import React from 'react';
-import TableComponent from '@/components/TableComponent';
 import { Table } from 'flowbite-react';
 
 const columns = ['Tên', 'Lý do bị phạt', 'Số tiền', 'Trạng thái']

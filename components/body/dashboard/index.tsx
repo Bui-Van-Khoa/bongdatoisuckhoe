@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { Doughnut, Line } from 'react-chartjs-2';
 import 'chart.js/auto';
-import { getUser, checkIfUserInAccount } from '@/lib/api/users';
+import { checkIfUserInAccount } from '@/lib/api/users';
 import UserInformationForm from '@/components/UserInformationForm';
 import LoadingComponent from '@/components/LoadingComponent';
 import {
@@ -15,6 +15,12 @@ import {
 	getAttendedMember,
 } from '@/lib/api/match';
 import TableComponent from '@/components/TableComponent';
+import { Can } from "@/components/Abilities";
+import { getUserDetail } from '@/common/getUserDetail';
+import { Button } from 'flowbite-react';
+import EditMatchModal from './EditMatchModal';
+
+
 
 export const data = {
 	labels: ['Thắng', 'Hòa', 'Thua'],
@@ -84,7 +90,7 @@ const index: React.FC = () => {
 	useEffect(() => {
 		(async () => {
 			await getAllAttendedMember();
-			const user: any = await getUser();
+			const user = getUserDetail();
 			setEmail(user?.email);
 			setUserId(user?.id);
 
@@ -99,8 +105,8 @@ const index: React.FC = () => {
 				setFiledNumber(null);
 
 				matchInformation = {
-					email: user.email,
-					userName: user.email.match(/^.+(?=@)/)[0],
+					email: user?.email,
+					userName: user?.user_name,
 					time: 'Đang đặt sân...',
 					location: 'Đang đặt sân...',
 					filedNumber: null,
@@ -110,8 +116,8 @@ const index: React.FC = () => {
 				setNextMatchPlace(`Sân vận động ${nextMatchInformation[0].place} - `);
 				setFiledNumber(`sân số ${nextMatchInformation[0].field_number}`);
 				matchInformation = {
-					email: user.email,
-					userName: user.email.match(/^.+(?=@)/)[0],
+					email: user?.email,
+					userName: user?.user_name,
 					time: isTimeExpire,
 					location: nextMatchInformation[0].place,
 					filedNumber: nextMatchInformation[0].field_number,
@@ -128,6 +134,7 @@ const index: React.FC = () => {
 	useEffect(() => {
 		checkUserRegisterCompete(email);
 	}, [isRegisterCompeteLoading]);
+
 
 	const checkOpenUserDetailModal = async (data: any) => {
 		const isUserExist = await checkIfUserInAccount(data);
@@ -238,6 +245,7 @@ const index: React.FC = () => {
 				<div className="flex flex-col gap-4 pb-8 relative">
 					<div className="bg-white shadow-md mt-2 rounded-lg p-4 flex flex-col gap-4">
 						<h1 className="text-xl font-medium">Trận đấu tiếp theo</h1>
+
 						<p className="text-lg ">
 							Thời gian:{' '}
 							<span className="text-red-500 font-semibold">
@@ -250,6 +258,9 @@ const index: React.FC = () => {
 								{nextMatchPlace} {filedNumber}
 							</span>
 						</p>
+						<Can I="edit" a="Match">
+							<Button className='w-fit'>Chỉnh sửa trận đấu</Button>
+						</Can>
 					</div>
 					<div className="bg-white shadow-md mt-2 rounded-lg p-4">
 
@@ -324,15 +335,16 @@ const index: React.FC = () => {
 					</div>
 				</div>
 			)}
-				<UserInformationForm
-					isModalOpen={isOpenUserForm}
-					email={email}
-					userId={userId}
-					closeModalStatus={() =>{
-						setIsOpenUserForm(false),
+			<UserInformationForm
+				isModalOpen={isOpenUserForm}
+				email={email}
+				userId={userId}
+				closeModalStatus={() => {
+					setIsOpenUserForm(false),
 						setIsLoading(false)
-					}}
-				/>
+				}}
+			/>
+			<EditMatchModal />
 		</>
 	);
 };
