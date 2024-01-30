@@ -32,3 +32,7 @@ export async function getUserDetail(id:any) {
 	const { data } = await supabase.from('accounts').select();
   return data;
 }
+
+export async function insertUserFault(data:any) {
+	const { error } = await supabase.from('list_of_penalties').insert(data);
+}

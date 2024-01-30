@@ -1,21 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderOpen } from '@fortawesome/free-regular-svg-icons';
+import { Button } from 'flowbite-react';
 
 interface UserInformationFormProps {
-	columns: object;
-	dataSource: object;
+	columns: any;
+	dataSource: Array<any>;
 	loading: boolean
 }
 
 const TableComponent: React.FC<UserInformationFormProps> = ({ columns, dataSource, loading }) => {
 	const [trHead, setTrHead] = useState<any>(null)
-	const [dataTable, setDataTable] = useState<any>()
-	const [fakeLoading, setFakeLoading] = useState(true)
+	const [dataTable, setDataTable] = useState<any>([])
+	const [activeIndex, setActiveIndex] = useState(0)
+	const [rangeData, setRangeData] = useState(0)
+
+
 
 	useEffect(() => {
+		const chunkSize = 10;
+		const chunks = [];
+
+		for (let i = 0; i < Object.keys(dataSource).length; i += chunkSize) {
+			const chunk = dataSource.slice(i, i + chunkSize);
+			console.log("chunk", chunk)
+			chunks.push(chunk);
+		}
+		console.log("data", chunks)
 		setTrHead(columns);
-		setDataTable(dataSource)
+		setDataTable(chunks)
+
 	}, [columns, dataSource])
 
 	const renderBodyTable = (data: any) => {
@@ -35,21 +49,11 @@ const TableComponent: React.FC<UserInformationFormProps> = ({ columns, dataSourc
 					: <>
 						{(data || []).map((item: any, idx: any) => (
 							<tr key={idx} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-								<th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-									{item.name}
-								</th>
-								<td className="px-6 py-4">
-									{item.number}
-								</td>
-								<td className="px-6 py-4">
-									{item.position}
-								</td>
-								<td className="px-6 py-4">
-									{item.height}
-								</td>
-								<td className="px-6 py-4">
-									{item.weight}
-								</td>
+								{(columns || []).map((column: any, idx: number) => (
+									<>
+										{idx === 0 ? <th key={idx}>{item[column.key]}</th> : <td key={idx} className="px-6 py-4">{item[column.key]}</td>}
+									</>
+								))}
 							</tr>
 						))}
 					</>
@@ -65,7 +69,7 @@ const TableComponent: React.FC<UserInformationFormProps> = ({ columns, dataSourc
 				<thead className="text-xs text-gray-700 bg-blue-100 dark:bg-blue-700 dark:text-gray-400">
 					<tr>
 						{(trHead || []).map((item: any, idx: any) => (
-							<th key={idx} scope="col" className="px-3 py-3">{item}</th>
+							<th key={idx} scope="col" className="px-3 py-3">{item.title}</th>
 						))}
 					</tr>
 				</thead>
@@ -84,10 +88,32 @@ const TableComponent: React.FC<UserInformationFormProps> = ({ columns, dataSourc
 							</tr>
 
 						)
-						: renderBodyTable(dataSource)
+						: renderBodyTable(dataTable[activeIndex] || [])
 					}
 				</tbody>
 			</table>
+			{dataTable.length > 1 && (
+				<nav className="flex items-center flex-column flex-wrap md:flex-row justify-between px-4 py-6" aria-label="Table navigation">
+					<span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span className="font-semibold text-gray-900 dark:text-white">{activeIndex*10 +1}-{rangeData*10 + 10}</span> of <span className="font-semibold text-gray-900 dark:text-white">{dataSource.length}</span></span>
+					<ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 gap-1">
+						{dataTable.map((item: any, idx: any) => (
+							<li>
+								{activeIndex === idx
+									? <Button color="blue" size="xs" onClick={() => {
+										setActiveIndex(idx);
+									}}>{idx + 1}</Button>
+									: <Button color="gray" size="xs" onClick={() => {
+										setActiveIndex(idx);
+									}}>{idx + 1}</Button>
+								}
+
+							</li>
+						))}
+
+					</ul>
+				</nav>
+			)}
+
 		</div>
 
 	);

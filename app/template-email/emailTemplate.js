@@ -1,6 +1,6 @@
 // emailTemplate.js
 
-const generateEmailTemplate = ({ name, time, location, filedNumber }) => {
+const generateEmailTemplate = ({ name, time, location, filedNumber, address }) => {
   return `
 	<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
@@ -184,6 +184,8 @@ const generateEmailTemplate = ({ name, time, location, filedNumber }) => {
 																	style="color:red;font-weight: bold">Sân số ${filedNumber || 'updating...'} - ${
                                     location || 'updating'
                                   }</span></li>
+															<li style="padding-bottom: 20px"><strong>Địa chỉ: </strong> <span
+															style="color:red;font-weight: bold">${address}</span></li>
 														</ul>
 													</div>
 												</td>

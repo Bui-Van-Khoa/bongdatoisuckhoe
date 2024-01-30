@@ -4,7 +4,28 @@ import React, { useEffect, useState } from 'react';
 import { getAllUser } from '@/lib/api/users';
 import TableComponent from '@/components/TableComponent';
 
-const columns = ['Tên', 'Số áo', 'Vị trí', 'Chiều cao', 'Cân nặng'];
+const columns = [
+	{
+		title:'Tên',
+		key:'name'
+	},
+	{
+		title:'Số áo',
+		key:'number'
+	},
+	{
+		title:'Vị trí',
+		key:'position'
+	},
+	{
+		title:'Chiều cao',
+		key:'height'
+	},
+	{
+		title:'Cân nặng',
+		key:'weight'
+	},
+];
 
 const page: React.FC = () => {
 	const [dataTable, setDataTable] = useState([]);

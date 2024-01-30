@@ -5,12 +5,6 @@ export async function getNextMatch() {
   return data;
 }
 
-export async function loadHeaderImage() {
-  const { data } = await supabase.storage.from('logo').getPublicUrl('logo.jpg');
-  const imageUrl = data.publicUrl;
-  return imageUrl;
-}
-
 export async function insertAttendedMember(data: any) {
   const { error } = await supabase.from('attended-members').insert(data);
   return error;
@@ -47,4 +41,13 @@ export async function getAttendedMember() {
     )
   `);
   return data;
+}
+
+export async function updateNextMatch(data:any) {
+	const { error } = await supabase
+  .from('next-match')
+  .update(data)
+  .eq('id', 1)
+
+	return error;
 }

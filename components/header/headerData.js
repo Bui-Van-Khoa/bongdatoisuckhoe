@@ -6,7 +6,7 @@ export const navMenu = [
   {
     title: 'Thành viên',
     link: '/members',
-  },
+  }, 
   // {
   //   title: 'Quỹ đội bóng',
   //   link: '/team-fun',

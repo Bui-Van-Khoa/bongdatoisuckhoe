@@ -69,7 +69,28 @@ const data1 = {
 	],
 };
 
-const columnsAttendedMember = ['Tên', 'Số áo', 'Vị trí', 'Chiều cao', 'Cân nặng'];
+const columnsAttendedMember = [
+	{
+		title:'Tên',
+		key:'name'
+	},
+	{
+		title:'Số áo',
+		key:'number'
+	},
+	{
+		title:'Vị trí',
+		key:'position'
+	},
+	{
+		title:'Chiều cao',
+		key:'height'
+	},
+	{
+		title:'Cân nặng',
+		key:'weight'
+	},
+];
 const index: React.FC = () => {
 	const { v4: uuidv4 } = require('uuid');
 	const [isLoading, setIsLoading] = useState(true);
@@ -79,6 +100,7 @@ const index: React.FC = () => {
 	const [filedNumber, setFiledNumber] = useState<any>();
 	const [nextMatchPlace, setNextMatchPlace] = useState<any>('');
 	const [nextMatchTime, setNextMatchTime] = useState('');
+	const [nextMatchAddress, setNextMatchAddress] = useState('');
 	const [emailData, setEmailData] = useState<any>();
 	const [isRegisterCompete, setIsRegisterCompete] = useState<boolean>(false);
 	const [isRegisterCompeteLoading, setIsRegisterCompeteLoading] =
@@ -86,44 +108,15 @@ const index: React.FC = () => {
 	const [dataRegisterCompeteTable, setDataRegisterCompeteTable] = useState<any>(
 		{},
 	);
+	const [isOpenUpdateNextMatch, setIsOpenUpdateNextMatch] = useState(false);
+	const user = getUserDetail();
+
 
 	useEffect(() => {
 		(async () => {
 			await getAllAttendedMember();
-			const user = getUserDetail();
 			setEmail(user?.email);
 			setUserId(user?.id);
-
-			const nextMatchInformation: any = await getNextMatch();
-
-			const isTimeExpire = changeTimeAndPlace(nextMatchInformation[0]);
-
-			let matchInformation = {};
-			if (!isTimeExpire) {
-				setNextMatchTime('Đang đặt sân...');
-				setNextMatchPlace('Đang đặt sân...');
-				setFiledNumber(null);
-
-				matchInformation = {
-					email: user?.email,
-					userName: user?.user_name,
-					time: 'Đang đặt sân...',
-					location: 'Đang đặt sân...',
-					filedNumber: null,
-				};
-			} else {
-				setNextMatchTime(isTimeExpire);
-				setNextMatchPlace(`Sân vận động ${nextMatchInformation[0].place} - `);
-				setFiledNumber(`sân số ${nextMatchInformation[0].field_number}`);
-				matchInformation = {
-					email: user?.email,
-					userName: user?.user_name,
-					time: isTimeExpire,
-					location: nextMatchInformation[0].place,
-					filedNumber: nextMatchInformation[0].field_number,
-				};
-			}
-			setEmailData(matchInformation);
 
 			checkOpenUserDetailModal(user?.email);
 
@@ -135,6 +128,44 @@ const index: React.FC = () => {
 		checkUserRegisterCompete(email);
 	}, [isRegisterCompeteLoading]);
 
+	useEffect(() => {
+		getNextMatchInformation()
+	}, [isOpenUpdateNextMatch])
+
+	const getNextMatchInformation = async () => {
+		const nextMatchInformation: any = await getNextMatch();
+		const isTimeExpire = changeTimeAndPlace(nextMatchInformation[0].time);
+		let matchInformation = {};
+			if (!isTimeExpire) {
+				setNextMatchTime('Đang đặt sân...');
+				setNextMatchPlace('Đang đặt sân...');
+				setFiledNumber(null);
+				setNextMatchAddress('Đang đặt sân...')
+				matchInformation = {
+					email: user?.email,
+					userName: user?.user_name,
+					time: 'Đang đặt sân...',
+					location: 'Đang đặt sân...',
+					filedNumber: null,
+					address:'Đang đặt sân'
+				};
+			} else {
+				setNextMatchTime(isTimeExpire);
+				setNextMatchPlace(`Sân vận động ${nextMatchInformation[0].place} - `);
+				setFiledNumber(`sân số ${nextMatchInformation[0].field_number}`);
+				setNextMatchAddress(nextMatchInformation[0].address)
+				matchInformation = {
+					email: user?.email,
+					userName: user?.user_name,
+					time: isTimeExpire,
+					location: nextMatchInformation[0].place,
+					filedNumber: nextMatchInformation[0].field_number,
+					address:nextMatchInformation[0].address
+				};
+			}
+
+		setEmailData(matchInformation);
+	}
 
 	const checkOpenUserDetailModal = async (data: any) => {
 		const isUserExist = await checkIfUserInAccount(data);
@@ -154,7 +185,7 @@ const index: React.FC = () => {
 
 	const changeTimeAndPlace = (data: any) => {
 		const today = new Date();
-		const date = new Date(data.time);
+		const date = new Date(data);
 		const year = date.getFullYear();
 		const month = date.getMonth() + 1;
 		const day = date.getDate();
@@ -187,6 +218,7 @@ const index: React.FC = () => {
 			formData.append('time', emailData?.time);
 			formData.append('location', emailData?.location);
 			formData.append('filedNumber', emailData?.filedNumber);
+			formData.append('address', emailData?.address);
 			const response = await fetch('/api/contact', {
 				method: 'post',
 				body: formData,
@@ -258,8 +290,14 @@ const index: React.FC = () => {
 								{nextMatchPlace} {filedNumber}
 							</span>
 						</p>
+						<p className="text-lg ">
+							Địa chỉ:{' '}
+							<span className="text-red-500 font-semibold">
+								{nextMatchAddress}
+							</span>
+						</p>
 						<Can I="edit" a="Match">
-							<Button className='w-fit'>Chỉnh sửa trận đấu</Button>
+							<Button className='w-fit' onClick={() => setIsOpenUpdateNextMatch(true)}>Chỉnh sửa trận đấu</Button>
 						</Can>
 					</div>
 					<div className="bg-white shadow-md mt-2 rounded-lg p-4">
@@ -344,7 +382,7 @@ const index: React.FC = () => {
 						setIsLoading(false)
 				}}
 			/>
-			<EditMatchModal />
+			<EditMatchModal isOpen={isOpenUpdateNextMatch} closeModalStatus={() => setIsOpenUpdateNextMatch(false)} />
 		</>
 	);
 };

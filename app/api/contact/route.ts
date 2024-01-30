@@ -10,6 +10,7 @@ export async function POST(request: any) {
   const time = formData.get('time');
   const location = formData.get('location');
   const filedNumber = formData.get('filedNumber');
+  const address = formData.get('address');
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -29,6 +30,7 @@ export async function POST(request: any) {
         time: time,
         location: location,
         filedNumber: filedNumber,
+				address:address,
       }),
     });
     transporter.close();

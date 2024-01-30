@@ -23,12 +23,12 @@ export const listMatchPlace = [
   {
     id: 5,
     name: 'Trang Hoàng ',
-    address: 'Số 86 – Duy Tân –  Đà Nẵng',
+    address: 'Số 86, đường Duy Tân, TP.Đà Nẵng',
   },
   {
     id: 6,
     name: 'Mỹ Nhật Quang',
-    address: 'số 498 – Nguyễn Hữu Thọ – Khuê Trung – Cẩm Lệ – Đà Nẵng',
+    address: 'số 498, đường Nguyễn Hữu Thọ – Khuê Trung – Cẩm Lệ – Đà Nẵng',
   },
   {
     id: 7,
