@@ -15,8 +15,7 @@ export async function middleware(req: NextRequest) {
   if (!user ) {
 		return NextResponse.redirect(new URL('/login', req.url))
   }else {
-		const data:any = await getUserDetail(user.id)
-		res.cookies.set('user', JSON.stringify(data[0]))
+		res.cookies.set('user', JSON.stringify(user))
 	}
 
   return res
