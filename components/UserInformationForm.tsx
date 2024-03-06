@@ -1,9 +1,7 @@
-import { FC } from 'react';
-import { Button, Modal, Form, Input, Select, InputNumber } from 'antd';
+'use client'
+import { FC, useEffect, useState } from 'react';
 import { insertUserToAccount } from '@/lib/api/users';
-
-const { Option } = Select;
-
+import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
 
 
 interface UserInformationFormProps {
@@ -13,102 +11,119 @@ interface UserInformationFormProps {
 	closeModalStatus: () => void;
 }
 
-const UserInformationForm: FC<UserInformationFormProps> = ({ isModalOpen, email, userId, closeModalStatus }) => {
+const UserInformationForm: FC<UserInformationFormProps> = ({
+	isModalOpen,
+	email,
+	userId,
+	closeModalStatus,
+}) => {
+	const [formData, setFormData] = useState({
+		id: userId,
+		user_name: null,
+		position: 'Tiền đạo',
+		number: null,
+		height: null,
+		weight: null,
+		email: email,
+	})
 
-	const handleSubmitForm = async (values: any) => {
-		const accountForm = {
-			id: userId,
-			user_name: values.user_name,
-			position: values.position,
-			number: values.number,
-			height: values.height,
-			weight: values.weight,
-			email: email
-		}
-		await insertUserToAccount(accountForm)
-		closeModalStatus()
+	const changeFormData = (data: any) => {
+		const key = data.type;
+		const val = data.val;
+
+		setFormData({
+			...formData,
+			id:userId,
+			email,
+			[key]: val
+		})
+	}
+	const handleSubmitForm = async (e:any) => {
+		e.preventDefault();
+		await insertUserToAccount(formData);
+		closeModalStatus();
 	};
 
+	useEffect(() => {
+		setFormData({
+			...formData,
+			id:userId,
+			email,
+		})
+	},[email,userId])
 
 	return (
-		<div>
-			<Modal
-				title={<p className="text-black/[.88] text-xl font-bold">Vui lòng cập nhật thông tin của bạn</p>}
-				open={isModalOpen}
-				closable={false}
-				maskClosable={true}
-				footer={null}
-			>
-				<Form
-					layout='vertical'
-					onFinish={handleSubmitForm}
-				>
-					<Form.Item
-						label="Tên ingame"
-						name="user_name"
-						rules={[{ required: true, message: "Đây là trường bắt buộc" }]}
-					>
-						<Input
-							placeholder="Vui lòng điền tên ingame của bạn!"
-						/>
-					</Form.Item>
-					<Form.Item
-						label="Vị trí"
-						name="position"
-						rules={[{ required: true, message: "Đây là trường bắt buộc" }]}
-					>
-						<Select
-							placeholder="Vui lòng điền vị trí của bạn!"
-							allowClear
-						>
-							<Option value="Tiền đạo">Tiền đạo</Option>
-							<Option value="Tiền vệ">Tiền vệ</Option>
-							<Option value="Hậu vệ">Hậu vệ</Option>
-							<Option value="Thủ môn">Thủ môn</Option>
-							<Option value="Dự bị">Dự bị</Option>
-							<Option value="Báo con">Báo con</Option>
-						</Select>
-					</Form.Item>
-					<Form.Item
-						label="Số áo"
-						name="number"
-						rules={[
-							{ required: true, message: 'Đây là trường bắt buộc!' },
-						]}
-					>
-						<Input
-							type='number'
-							placeholder="Vui lòng điền số áo của bạn!"
-						/>
-					</Form.Item>
-					<Form.Item
-						label="Chiều cao (cm)"
-						name="height"
-						rules={[{ required: true, message: "Đây là trường bắt buộc" }]}
-					>
-						<Input
-							type='number'
-							placeholder="Vui lòng điền chiều cao của bạn!"
-						/>
-					</Form.Item>
-					<Form.Item
-						label="Cân nặng (kg)"
-						name="weight"
-						rules={[{ required: true, message: "Đây là trường bắt buộc" }]}
-					>
-						<Input
-							type='number'
-							placeholder="Vui lòng điền cân nặng của bạn!"
-						/>
-					</Form.Item>
-					<Form.Item>
-						<Button type="primary" htmlType="submit" className="bg-blue-600">
-							Submit
-						</Button>
-					</Form.Item>
-				</Form>
+		<>
+			<Modal show={isModalOpen} >
+				<Modal.Header>Vui lòng cập nhật thông tin của bạn</Modal.Header>
+				<Modal.Body>
+					<form className="flex flex-col gap-4" onSubmit={handleSubmitForm}>
+						<div>
+							<div className="mb-2 block">
+								<Label htmlFor="name" value="Tên ingame" />
+							</div>
+							<TextInput
+								id="name"
+								type="text"
+								placeholder="Vui lòng điền tên ingame của bạn!"
+								required
+								onChange={(e) => changeFormData({ type: 'user_name', val: e.target.value })} />
+						</div>
+						<div>
+							<div className="mb-2 block">
+								<Label htmlFor="position" value="Vị trí" />
+							</div>
+							<Select
+								id="position"
+								required
+								onChange={(e) => changeFormData({ type: 'position', val: e.target.value })} >
+								<option>Tiền đạo</option>
+								<option>Tiền vệ</option>
+								<option>Hậu vệ</option>
+								<option>Thủ môn</option>
+								<option>Dự bị</option>
+								<option>Báo con</option>
+							</Select>
+						</div>
+						<div>
+							<div className="mb-2 block">
+								<Label htmlFor="number" value="Số áo (Vui lòng điền chữ số)" />
+							</div>
+							<TextInput
+								id="number"
+								type="number"
+								placeholder="Vui lòng điền số áo của bạn!"
+								required
+								onChange={(e) => changeFormData({ type: 'number', val: e.target.value })} />
+						</div>
+						<div>
+							<div className="mb-2 block">
+								<Label htmlFor="height" value="Chiều cao (cm)" />
+							</div>
+							<TextInput
+								id="height"
+								type="number"
+								placeholder="Vui lòng điền chiều cao của bạn!"
+								required
+								onChange={(e) => changeFormData({ type: 'height', val: e.target.value })} />
+						</div>
+						<div>
+							<div className="mb-2 block">
+								<Label htmlFor="weight" value="Cân nặng (kg)" />
+							</div>
+							<TextInput
+								id="weight"
+								type="number"
+								placeholder="Vui lòng điền cân nặng của bạn!"
+								required
+								onChange={(e) => changeFormData({ type: 'weight', val: e.target.value })} />
+						</div>
+						<Button type="submit">Submit</Button>
+					</form>
+				</Modal.Body>
 			</Modal>
-		</div>
+
+		</>
 	);
 };
 

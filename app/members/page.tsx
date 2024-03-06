@@ -1,50 +1,42 @@
-"use client"
+'use client';
 
-import React, { useEffect, useState } from 'react'
-import { Space, Table, Tag } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { getAllUser } from '@/lib/api/users';
-
+import TableComponent from '@/components/TableComponent';
 
 const columns = [
 	{
-		title: 'Tên',
-		dataIndex: 'name',
-		key: 'name',
+		title:'Tên',
+		key:'name'
 	},
 	{
-		title: 'Số áo',
-		dataIndex: 'number',
-		key: 'number',
+		title:'Số áo',
+		key:'number'
 	},
 	{
-		title: 'Vị trí',
-		key: 'position',
-		dataIndex: 'position',
+		title:'Vị trí',
+		key:'position'
 	},
 	{
-		title: 'Chiều cao',
-		key: 'height',
-		dataIndex: 'height',
+		title:'Chiều cao',
+		key:'height'
 	},
 	{
-		title: 'Cân nặng',
-		key: 'weight',
-		dataIndex: 'weight',
+		title:'Cân nặng',
+		key:'weight'
 	},
-
 ];
 
 const page: React.FC = () => {
-
-	const [dataTable, setDataTable] = useState([])
-	const [isLoading, setIsLoading] = useState(false)
+	const [dataTable, setDataTable] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		(async function () {
 			try {
-				setIsLoading(true)
-				const data: any = await getAllUser()
-				const temptableData: any = []
+				setIsLoading(true);
+				const data: any = await getAllUser();
+				const temptableData: any = [];
 				data.map((item: any) => {
 					temptableData.push({
 						key: item.id,
@@ -52,29 +44,27 @@ const page: React.FC = () => {
 						number: item.number,
 						position: item.position,
 						height: item.height,
-						weight: item.weight
-					})
-					setDataTable(temptableData)
-				})
-				setIsLoading(false)
-			} catch (error) {
-
-			}
+						weight: item.weight,
+					});
+					setDataTable(temptableData);
+				});
+				setIsLoading(false);
+			} catch (error) { }
 		})();
-
-	}, [])
+	}, []);
 	return (
-		<div className='px-3 sm:px-10 bg-slate-200 h-screen'>
-			<div className='flex flex-col gap-4 pb-8' >
-					<div className='bg-white shadow-md mt-2 rounded-lg p-4 '>
-						<h1 className='text-xl font-medium'>Thành viên đội bóng</h1>
-						<Table columns={columns} dataSource={dataTable} loading={isLoading} className='mt-4' />
-					</div>
+		<div className="px-3 sm:px-10 bg-slate-200 h-screen">
+			<div className="flex flex-col gap-4 pb-8">
+				<div className="bg-white shadow-md mt-2 rounded-lg p-4 ">
+					<h1 className="text-xl font-medium">Thành viên đội bóng</h1>
+					<TableComponent
+						columns={columns}
+						dataSource={dataTable}
+						loading={isLoading} />
+				</div>
 			</div>
 		</div>
+	);
+};
 
-
-	)
-}
-
-export default page
+export default page;

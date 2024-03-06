@@ -14,7 +14,7 @@ const defaultUrl = process.env.VERCEL_URL
 export const metadata = {
 	metadataBase: new URL(defaultUrl),
 	title: 'Bong da suc khoe toi',
-	description: 'The fastest way to build apps with Next.js and Supabase',
+	description: 'Nơi những anh em đam mê bóng đá giao lưu võ thuật, trao đổi ống đồng.',
 };
 
 export default function RootLayout({
@@ -22,20 +22,14 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
-
 	return (
-		<Providers>
-			<html lang="en" className={GeistSans.className}>
-				<body>
-					<Header />
-					<main className='-z-10'>
-						{children}
-					</main>
-				</body>
-			</html>
-		</Providers>
+			<Providers>
+				<html lang="en" className={GeistSans.className}>
+					<body>
+						<Header />
+						<main className="-z-10">{children}</main>
+					</body>
+				</html>
+			</Providers>
 	);
 }
-
-
-
